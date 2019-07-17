@@ -10,7 +10,10 @@ from torch.utils.data import Dataset, DataLoader
 from model import *
 from prep_data import *
 import sys
+import visdom
 
+vis = visdom.Visdom()
+loss_win = vis.line([0],[0], opts={'title':'training loss'})
 #### preparing dataset
 with open("./data/MNIST.pkl", 'rb') as file_handle:
     MNIST = pickle.load(file_handle)
@@ -43,7 +46,7 @@ for epoch in range(num_epoch):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
+        vis.line([loss.item()],[epoch*118+idx],update='append',win=loss_win)
         print("epoch: {:>4d}, idx: {:>4d}, loss: {:.2f}".format(epoch, idx, loss.item()),
               file = log_file_handle, flush = True)
         
