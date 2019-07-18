@@ -12,7 +12,7 @@ from prep_data import *
 import sys
 import visdom
 
-vis = visdom.Visdom()
+vis = visdom.Visdom(port=9091)
 loss_win = vis.line([0],[0], opts={'title':'training loss'})
 #### preparing dataset
 with open("./data/MNIST.pkl", 'rb') as file_handle:
